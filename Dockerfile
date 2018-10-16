@@ -2,7 +2,7 @@
 # AWS CLI tools in a docker container
 # ===============================================
 FROM ubuntu:16.04
-MAINTAINER Dale Anderson <danderson@acromediainc.com>
+MAINTAINER Dale Anderson (http://www.acromedia.com/)
 
 # ----------------
 # Prevent a lot of complaining from apt
