@@ -38,5 +38,5 @@ RUN pip install -q awscli
 RUN pip install -q yamllint
 RUN pip install -q boto
 
-## Set the default command: display awscli version
-CMD [ "aws"", "--version" ]
+## Set the default command: display Ansible version
+CMD [ "aws", "--version" ]
