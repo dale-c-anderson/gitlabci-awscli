@@ -1,7 +1,7 @@
 # ===============================================
 # AWS CLI tools in a docker container
 # ===============================================
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Dale Anderson (http://www.acromedia.com/)
 
 # ----------------
