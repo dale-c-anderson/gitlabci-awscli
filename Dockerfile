@@ -33,10 +33,18 @@ RUN apt-get install -yqq xz-utils
 # ----------------
 # Install AWS CLI tools
 # ----------------
-RUN apt-get install -yqq python-pip
-RUN pip install -q awscli
-RUN pip install -q yamllint
-RUN pip install -q boto
+RUN apt-get install -yqq python3-pip
+RUN pip3 install -q awscli
+RUN pip3 install -q yamllint
+RUN pip3 install -q boto
+RUN pip3 install -q boto3
+RUN pip3 install -q botocore
+
+
+# ----------------
+# Install jq so we can parse output from awscli
+# ----------------
+RUN apt-get install -yq jq
 
 ## Set the default command: display Ansible version
 CMD [ "aws", "--version" ]
