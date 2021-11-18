@@ -29,6 +29,7 @@ RUN apt-get install -yqq wget
 RUN apt-get install -yqq unzip
 RUN apt-get install -yqq bzip2
 RUN apt-get install -yqq xz-utils
+RUN apt-get install -yqq git
 
 # ----------------
 # Install AWS CLI tools
