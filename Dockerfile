@@ -1,7 +1,7 @@
 # ===============================================
 # AWS CLI tools in a docker container
 # ===============================================
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 MAINTAINER Dale Anderson (http://www.acromedia.com/)
 
 # ----------------
@@ -12,41 +12,56 @@ ENV DEBIAN_FRONTEND noninteractive
 # ----------------
 # Get everything up to date
 # ----------------
-RUN apt-get -qq update
-RUN apt-get -yqq upgrade
+RUN apt-get -q update && apt-get -yq upgrade \
+    && apt-get install -yq apt-utils \
+    && apt-get install -yq apt-transport-https \
+    && apt-get install --no-install-recommends -yq \
+        curl \
+        ca-certificates \
+        wget \
+        unzip \
+        bzip2 \
+        xz-utils \
+        git \
+        zip \
+        jq \
+        && rm -rf /var/lib/apt/lists/*
+
+# # ----------------
+# # Prevent more complaining from apt
+# # ----------------
+# RUN
+# RUN
+#
+# # ----------------
+# # Allow us to download and unpack things
+# # ----------------
+# RUN
 
 # ----------------
-# Prevent more complaining from apt
+# Install AWS CLI prerequisites
 # ----------------
-RUN apt-get install -yqq apt-utils
-RUN apt-get install -yqq apt-transport-https
+# RUN apt-get install -yq jq
+# RUN apt-get install -yqq python3-pip
+# RUN pip3 install -q yamllint
+# RUN pip3 install -q boto
+# RUN pip3 install -q boto3
+# RUN pip3 install -q botocore
 
 # ----------------
-# Allow us to download and unpack things
+# Install aws cli v2
 # ----------------
-RUN apt-get install -yqq curl
-RUN apt-get install -yqq wget
-RUN apt-get install -yqq unzip
-RUN apt-get install -yqq bzip2
-RUN apt-get install -yqq xz-utils
-RUN apt-get install -yqq git
-RUN apt-get install -yqq zip
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+RUN rm awscliv2.zip
+RUN rm -rf aws/dist/awscli/examples
 
-# ----------------
-# Install AWS CLI tools
-# ----------------
-RUN apt-get install -yqq python3-pip
-RUN pip3 install -q awscli
-RUN pip3 install -q yamllint
-RUN pip3 install -q boto
-RUN pip3 install -q boto3
-RUN pip3 install -q botocore
 
 
 # ----------------
 # Install jq so we can parse output from awscli
 # ----------------
-RUN apt-get install -yq jq
 
 ## Set the default command: display Ansible version
 CMD [ "aws", "--version" ]
