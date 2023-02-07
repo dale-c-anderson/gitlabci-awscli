@@ -1,52 +1,34 @@
 # ===============================================
 # AWS CLI tools in a docker container
 # ===============================================
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 MAINTAINER Dale Anderson (http://www.acromedia.com/)
 
-# ----------------
-# Prevent a lot of complaining from apt
-# ----------------
 ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get -q update && apt-get -yq upgrade \
+    && apt-get install -yq apt-utils \
+    && apt-get install -yq apt-transport-https \
+    && apt-get install --no-install-recommends -yq \
+        curl \
+        ca-certificates \
+        wget \
+        unzip \
+        bzip2 \
+        xz-utils \
+        git \
+        zip \
+        jq \
+        && rm -rf /var/lib/apt/lists/*
 
 # ----------------
-# Get everything up to date
+# Install aws cli v2
 # ----------------
-RUN apt-get -qq update
-RUN apt-get -yqq upgrade
-
-# ----------------
-# Prevent more complaining from apt
-# ----------------
-RUN apt-get install -yqq apt-utils
-RUN apt-get install -yqq apt-transport-https
-
-# ----------------
-# Allow us to download and unpack things
-# ----------------
-RUN apt-get install -yqq curl
-RUN apt-get install -yqq wget
-RUN apt-get install -yqq unzip
-RUN apt-get install -yqq bzip2
-RUN apt-get install -yqq xz-utils
-RUN apt-get install -yqq git
-RUN apt-get install -yqq zip
-
-# ----------------
-# Install AWS CLI tools
-# ----------------
-RUN apt-get install -yqq python3-pip
-RUN pip3 install -q awscli
-RUN pip3 install -q yamllint
-RUN pip3 install -q boto
-RUN pip3 install -q boto3
-RUN pip3 install -q botocore
-
-
-# ----------------
-# Install jq so we can parse output from awscli
-# ----------------
-RUN apt-get install -yq jq
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm awscliv2.zip \
+    && rm -rf /aws \
+    && rm -rf /usr/local/aws-cli/v2/current/dist/awscli/examples
 
 ## Set the default command: display Ansible version
 CMD [ "aws", "--version" ]
