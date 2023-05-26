@@ -1,5 +1,5 @@
 # ===============================================
-# AWS CLI tools in a docker container
+# AWS CLI, plus a few other handy tools that I commonly need in Gitlab CI pipelines
 # ===============================================
 FROM ubuntu:22.04
 MAINTAINER Dale Anderson (http://www.acromedia.com/)
@@ -21,7 +21,7 @@ RUN apt-get -q update && apt-get -yq upgrade \
         && rm -rf /var/lib/apt/lists/*
 
 # ----------------
-# Install aws cli v2
+# Install aws cli v2 and remove the cruft
 # ----------------
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && unzip awscliv2.zip \
@@ -30,5 +30,5 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && rm -rf /aws \
     && rm -rf /usr/local/aws-cli/v2/current/dist/awscli/examples
 
-## Set the default command: display Ansible version
+## Set the default command: display AWS CLI version
 CMD [ "aws", "--version" ]
