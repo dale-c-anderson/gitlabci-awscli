@@ -1,13 +1,15 @@
 # ===============================================
 # AWS CLI, plus a few other handy tools that I commonly need in Gitlab CI pipelines
 # ===============================================
-FROM ubuntu:22.04
-MAINTAINER Dale Anderson (http://www.acromedia.com/)
-
-ENV DEBIAN_FRONTEND noninteractive
+FROM ubuntu:24.04
+LABEL maintainer="Dale Anderson (http://www.acromedia.com/)"
+LABEL org.opencontainers.image.title="GitLab CI AWS CLI"
+LABEL org.opencontainers.image.description="AWS CLI v2 with common GitLab CI pipeline tools"
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -q update && apt-get -yq upgrade \
     && apt-get install -yq apt-utils \
-    && apt-get install -yq apt-transport-https \
     && apt-get install --no-install-recommends -yq \
         curl \
         ca-certificates \
@@ -18,6 +20,9 @@ RUN apt-get -q update && apt-get -yq upgrade \
         git \
         zip \
         jq \
+        sshpass \
+        openssh-client \
+        rsync \
         && rm -rf /var/lib/apt/lists/*
 
 # ----------------
